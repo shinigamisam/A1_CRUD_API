@@ -1,11 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import healthRoutes from "./routes/health.js";
+import taskRoutes from "./routes/tasks.js";
 
 const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.json());
+app.use("/tasks", taskRoutes);
 app.use("/health", healthRoutes);
 
 const info = {
