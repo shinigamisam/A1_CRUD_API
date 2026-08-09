@@ -1,4 +1,6 @@
 import express from "express";
+import { v4 as uuidv4 } from "uuid";
+
 const router = express.Router();
 
 const tasks = [
@@ -33,6 +35,29 @@ router.get("/:id", (req, res) => {
   }
 
   res.status(200).json(task);
+});
+
+router.post("/", (req, res) => {
+  const { title } = req.body;
+
+  if (!title || title.trim() === "") {
+    return res.status(400).json({
+      error: "Title is required",
+    });
+  }
+
+  const newId =
+    tasks.length > 0 ? Math.max(...tasks.map((task) => task.id)) + 1 : 1;
+
+  const task = {
+    id: newId,
+    title: title,
+    done: false,
+  };
+
+  tasks.push(task);
+
+  res.status(201).json(task);
 });
 
 export default router;
